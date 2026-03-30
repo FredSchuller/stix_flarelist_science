@@ -3,19 +3,21 @@
 This is a repository for a study of the STIX flare list using the scientific pixel data.
 This flarelist builds upon the operational STIX flare list that is avalable through [stixdcpy API](https://github.com/i4Ds/stixdcpy).
 From the events in this list with available pixel data, and with counts above 1000 in the 4-10 keV energy band an image was generated and the location of the flare estimated. 
-Currently it consists of ~25150 flares over the time period of 2021-01-01 to 2025-02-28.
+Currently it consists of ~33000 flares over the time period of 2021-01-01 to 2026-03-01.
 
- **just FYI I need to update this** 
- 
+> **Note:** This flarelist is actively maintained and may be updated soon. Column names, structure, and content are subject to change.
+
+> **Warning:** There is a known issue with the imaging for flares during summer 2025 that needs to be fixed. Flare locations from this period should be treated with caution and may be updated in a future version.
+
 Here we provide the flare list with the coordinates of the flare estimated, and in several coordinate frames and information whether that flare was observed from Earth.
-The flarelist if provided in this file: `STIX_flarelist_w_locations_20210318_20250228_version1_python.csv`
+The flarelist is provided in this file: `STIX_flarelist_w_locations_20210101_20260301_version1_python.csv`
 
 This can be read in python using `pd.read_csv`
-e.g. 
+e.g.
 
 ```
 >>> import pandas as pd
->>> stix_flarelist = pd.read_csv("STIX_flarelist_w_locations_20210318_20250228_version1_python.csv")`
+>>> stix_flarelist = pd.read_csv("STIX_flarelist_w_locations_20210101_20260301_version1_python.csv")
 ```
 or similary in IDL using `READ_CSV()`.
 
@@ -27,7 +29,7 @@ In this file, the flarelist contains:
 * `end_UTC` : end time of flare
 * `peak_UTC` : peak time of flare
 * `4-10 keV` : counts in 4-10 keV energy band
-* `10-15 keV` : counts in 4-10 keV energy band
+* `10-15 keV` : counts in 10-15 keV energy band
 * `15-25 keV` : counts in 15-25 keV energy band
 * `25-50 keV` : counts in 25-50 keV energy band
 * `50-84 keV` : counts in 50-84 keV energy band
@@ -36,7 +38,7 @@ In this file, the flarelist contains:
 * `bkg 10-15 keV` : 'background counts in the 10-15 keV channel (median value for most recent quiet period)' 
 * `bkg 15-25 keV` : 'background counts in the 15-25 keV channel (median value for most recent quiet period)' 
 * `bkg 25-50 keV` : 'background counts in the 25-50 keV channel (median value for most recent quiet period)' 
-* `bkg 50-84 keV` " 'background counts in the 50-84 keV channel (median value for most recent quiet period)' 
+* `bkg 50-84 keV` : 'background counts in the 50-84 keV channel (median value for most recent quiet period)'
 * `bkg_baseline_4-10 keV` : ' median value of the fitted baseline'
 * `hpc_x_solo` : Helioprojective X of flare in arcsec from Solar Orbiter observer location 
 * `hpc_y_solo` : Helioprojective Y of flare in arcsec from Solar Orbiter observer location 
@@ -50,9 +52,18 @@ In this file, the flarelist contains:
 * `solo_position_lat` : Heliographic latitude of the position of Solar Orbiter at time of flare
 * `solo_position_lon` : Heliographic longitude of the position of Solar Orbiter at time of flare
 * `solo_position_AU_distance` : Distance of Solar Orbiter to Sun in AU
+* `EAR_TDEL` : Light travel time from Solar Orbiter to Earth in seconds (useful for matching flare times with Earth-based observatories)
 * `GOES_class_time_of_flare` : GOES class of the GOES XRS data at time of flare  *Note this is the class of GOES XRS at time of flare, not derived from STIX data. Doesnt make sense to use when the flares isn't visible to Earth
 * `GOES_flux_time_of_flare` : GOES flux of the GOES XRS data at time of flare *Note this is the class of GOES XRS at time of flare, not derived from STIX data. Doesnt make sense to use when the flares isn't visible to Earth
-* `flare_id` : ID of flare from stixdcpy 
+* `flare_id` : ID of flare from stixdcpy
+* `sidelobes_ratio` : Ratio of sidelobes in the STIX image used to assess imaging quality
+* `goes_estimated_min_class` : Minimum estimated GOES class derived from STIX data
+* `goes_estimated_max_class` : Maximum estimated GOES class derived from STIX data
+* `goes_estimated_mean_class` : Mean estimated GOES class derived from STIX data
+* `goes_estimated_min_flux` : Minimum estimated GOES flux derived from STIX data
+* `goes_estimated_max_flux` : Maximum estimated GOES flux derived from STIX data
+* `goes_estimated_mean_flux` : Mean estimated GOES flux derived from STIX data
+* `error_with_imaging` : Boolean, True if there was an error during imaging for this flare (location columns will be NaN)
 
 
 How it was generated:
